@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-service
+  namespace: store
+  labels:
+    project: online-store
+    component: cart-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      project: online-store
+      component: cart-service
+  template:
+    metadata:
+      labels:
+        project: online-store
+        component: cart-service
+    spec:
+      containers:
+      - name: cart-service
+        image: devopsrinu/cart-service:v1
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cart-service
+  namespace: store
+  labels:
+    project: online-store
+    component: cart-service
+spec:
+  selector:
+    project: online-store
+    component: cart-service
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: store
+  labels:
+    project: online-store
+    component: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      project: online-store
+      component: frontend
+  template:
+    metadata:
+      labels:
+        project: online-store
+        component: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: devopsrinu/frontend:v1
+        imagePullPolicy: Always
+        ports:
+          - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: store
+  labels:
+    project: online-store
+    component: frontend
+spec:
+  type: LoadBalancer
+  selector:
+    project: online-store
+    component: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  
